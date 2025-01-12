@@ -1,5 +1,4 @@
 {
-  "installCommand": "yum install hostname && npm install",
+  "installCommand": "npm install",
   "buildCommand": "npm run build"
 }
-
