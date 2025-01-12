@@ -4,7 +4,7 @@
   "info": {
     "singularName": "part",
     "pluralName": "parts",
-    "displayName": "part"
+    "displayName": "Parts"
   },
   "options": {
     "draftAndPublish": true
@@ -14,11 +14,78 @@
     "name": {
       "type": "string"
     },
-    "category": {
+    "brand": {
       "type": "string"
     },
     "price": {
       "type": "decimal"
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "RAM",
+        "GPU",
+        "CPU",
+        "Motherboard",
+        "Mouse",
+        "Keyboard",
+        "Monitor",
+        "SSD",
+        "PSU",
+        "Case",
+        "Headset",
+        "Mousepad",
+        "TowerCooler",
+        "LiquidCooler"
+      ]
+    },
+    "capacity": {
+      "type": "string"
+    },
+    "speed": {
+      "type": "string"
+    },
+    "cores": {
+      "type": "string"
+    },
+    "memory": {
+      "type": "string"
+    },
+    "chipset": {
+      "type": "string"
+    },
+    "dpi": {
+      "type": "string"
+    },
+    "resolution": {
+      "type": "string"
+    },
+    "refresh_rate": {
+      "type": "integer"
+    },
+    "ssd_type": {
+      "type": "string"
+    },
+    "wattage": {
+      "type": "integer"
+    },
+    "form_factor": {
+      "type": "string"
+    },
+    "size": {
+      "type": "string"
+    },
+    "supported_sockets": {
+      "type": "string"
+    },
+    "radiator_size": {
+      "type": "string"
+    },
+    "builds": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::build.build",
+      "mappedBy": "parts"
     }
   }
 }

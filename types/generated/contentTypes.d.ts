@@ -369,10 +369,43 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiBuildBuild extends Struct.CollectionTypeSchema {
+  collectionName: 'builds';
+  info: {
+    displayName: 'Builds';
+    pluralName: 'builds';
+    singularName: 'build';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdat: Schema.Attribute.DateTime;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::build.build'> &
+      Schema.Attribute.Private;
+    parts: Schema.Attribute.Relation<'manyToMany', 'api::part.part'>;
+    publishedAt: Schema.Attribute.DateTime;
+    totalprice: Schema.Attribute.Decimal;
+    updatedat: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    user: Schema.Attribute.String;
+    users_permissions_users: Schema.Attribute.Relation<
+      'manyToMany',
+      'plugin::users-permissions.user'
+    >;
+  };
+}
+
 export interface ApiPartPart extends Struct.CollectionTypeSchema {
   collectionName: 'parts';
   info: {
-    displayName: 'part';
+    displayName: 'Parts';
     pluralName: 'parts';
     singularName: 'part';
   };
@@ -380,19 +413,84 @@ export interface ApiPartPart extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    category: Schema.Attribute.String;
+    brand: Schema.Attribute.String;
+    builds: Schema.Attribute.Relation<'manyToMany', 'api::build.build'>;
+    capacity: Schema.Attribute.String;
+    chipset: Schema.Attribute.String;
+    cores: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    dpi: Schema.Attribute.String;
+    form_factor: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::part.part'> &
+      Schema.Attribute.Private;
+    memory: Schema.Attribute.String;
+    name: Schema.Attribute.String;
+    price: Schema.Attribute.Decimal;
+    publishedAt: Schema.Attribute.DateTime;
+    radiator_size: Schema.Attribute.String;
+    refresh_rate: Schema.Attribute.Integer;
+    resolution: Schema.Attribute.String;
+    size: Schema.Attribute.String;
+    speed: Schema.Attribute.String;
+    ssd_type: Schema.Attribute.String;
+    supported_sockets: Schema.Attribute.String;
+    type: Schema.Attribute.Enumeration<
+      [
+        'RAM',
+        'GPU',
+        'CPU',
+        'Motherboard',
+        'Mouse',
+        'Keyboard',
+        'Monitor',
+        'SSD',
+        'PSU',
+        'Case',
+        'Headset',
+        'Mousepad',
+        'TowerCooler',
+        'LiquidCooler',
+      ]
+    >;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    wattage: Schema.Attribute.Integer;
+  };
+}
+
+export interface ApiPriceHistoriePriceHistorie
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'price_histories';
+  info: {
+    displayName: 'price-histories';
+    pluralName: 'price-histories';
+    singularName: 'price-historie';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    buildID: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<'oneToMany', 'api::part.part'> &
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::price-historie.price-historie'
+    > &
       Schema.Attribute.Private;
-    name: Schema.Attribute.String;
     price: Schema.Attribute.Decimal;
     publishedAt: Schema.Attribute.DateTime;
+    Timestamp: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    user: Schema.Attribute.String;
   };
 }
 
@@ -851,10 +949,11 @@ export interface PluginUsersPermissionsUser
   };
   options: {
     draftAndPublish: false;
-    timestamps: true;
   };
   attributes: {
+    admin: Schema.Attribute.Boolean;
     blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    builds: Schema.Attribute.Relation<'manyToMany', 'api::build.build'>;
     confirmationToken: Schema.Attribute.String & Schema.Attribute.Private;
     confirmed: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     createdAt: Schema.Attribute.DateTime;
@@ -905,7 +1004,9 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::build.build': ApiBuildBuild;
       'api::part.part': ApiPartPart;
+      'api::price-historie.price-historie': ApiPriceHistoriePriceHistorie;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;
